@@ -53,6 +53,28 @@ namespace SaxCloudCryptStorage
 				tbName.Text = Environment.UserName;	
 			}
 			
+			command.CommandText = "select * from CryptFolder";
+			reader = command.ExecuteReader();
+			
+			if(reader.HasRows)
+			{
+				reader.Read();
+				tbSyncFolder.Text = reader.GetString(reader.GetOrdinal("CryptFolderName"));
+			}
+			
+			command.CommandText = "select * from SourceFolder";
+			reader = command.ExecuteReader();
+			
+			if(reader.HasRows)
+			{
+				while(reader.Read())
+				{
+					int i = 0;
+					listBox1.Items[i] = reader.GetString(reader.GetOrdinal("SourceFolderName"));
+					i++;
+				}
+			}
+			
 			connection.Close();
 		
 			//
@@ -147,9 +169,8 @@ namespace SaxCloudCryptStorage
 					EncryptFolderOnce(listBox1.GetItemText(listBox1.Items[i]), listBox1.GetItemText(listBox1.Items[i]).Length);
 					EncryptFolder(listBox1.GetItemText(listBox1.Items[i]), listBox1.GetItemText(listBox1.Items[i]).Length);
 				}
-				MessageBox.Show("Verschlüsselung erledigt!");
 				btnEnc.Enabled = true;
-				label4.Text = "";
+				label4.Text = "Erledigt!";
 			}
 			else
 			{
@@ -173,6 +194,8 @@ namespace SaxCloudCryptStorage
 					{
 						label4.Text = f;
 						label4.Refresh();
+						
+						
 						
 						string sRootPath = Path.GetPathRoot(f);
 						sRootPath = sRootPath.Replace(":","_");
@@ -249,6 +272,45 @@ namespace SaxCloudCryptStorage
 			{
 				tbSyncFolder.Text = folderBrowserDialog1.SelectedPath;
 			}
+		}
+		
+		void BtnSpeichernClick(object sender, EventArgs e)
+		{
+			string iUser;
+			
+			SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
+			connection.Open();
+			
+			SQLiteCommand command = new SQLiteCommand(connection);
+			
+			command.CommandText = "create table if not exists CryptFolder (ID integer not null primary key autoincrement, idUser integer not null, CryptFolderName varchar(300) not null)";
+			command.ExecuteNonQuery();
+			
+			command.CommandText = "create table if not exists SourceFolder (ID integer not null primary key autoincrement, idUser integer not null, SourceFolderName varchar(500) not null)";
+			command.ExecuteNonQuery();
+			
+			command.CommandText = "select ID from User where Name = " + tbName.Text;
+			SQLiteDataReader reader = command.ExecuteReader();
+			
+			if(reader.HasRows)
+			{
+				reader.Read();
+				iUser = reader.GetString(reader.GetOrdinal("ID"));
+				
+				command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + iUser + tbSyncFolder.Text + ")";
+				command.ExecuteNonQuery();
+				
+				for(int i = 0;i < listBox1.Items.Count;i++)
+				{
+					command.CommandText = "insert into SourceFolder (idUser, SourceFolderName) values (" + iUser + listBox1.GetItemText(listBox1.Items[i]) + ")";
+				}
+			}
+			else
+			{
+				MessageBox.Show("Kann den angebenen User nicht in der Datenbank finden!");
+			}					
+			
+			connection.Close();
 		}
 	}
 }

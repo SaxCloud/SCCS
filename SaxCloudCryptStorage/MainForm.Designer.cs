@@ -191,7 +191,7 @@ namespace SaxCloudCryptStorage
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(442, 56);
 			this.label4.TabIndex = 15;
-			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// btnSpeichern
 			// 
@@ -201,6 +201,7 @@ namespace SaxCloudCryptStorage
 			this.btnSpeichern.TabIndex = 16;
 			this.btnSpeichern.Text = "Speichern";
 			this.btnSpeichern.UseVisualStyleBackColor = true;
+			this.btnSpeichern.Click += new System.EventHandler(this.BtnSpeichernClick);
 			// 
 			// MainForm
 			// 
