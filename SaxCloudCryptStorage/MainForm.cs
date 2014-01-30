@@ -1,0 +1,254 @@
+﻿/*
+ * Created by SharpDevelop.
+ * User: bohlrich
+ * Date: 28.01.2014
+ * Time: 10:03
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
+using System.IO;
+using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.Data.SQLite;
+
+namespace SaxCloudCryptStorage
+{
+	/// <summary>
+	/// Description of MainForm.
+	/// </summary>
+	public partial class MainForm : Form
+	{
+		public MainForm()
+		{
+			//
+			// The InitializeComponent() call is required for Windows Forms designer support.
+			//
+			InitializeComponent();
+			
+			SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
+			connection.Open();
+			
+			SQLiteCommand command = new SQLiteCommand(connection);
+			command.CommandText = "create table if not exists User (ID integer not null primary key autoincrement, UserName varchar(40) not null, EMail varchar(100) not null, bKey int not null)";
+			command.ExecuteNonQuery();
+			
+			command.CommandText = "select * from User";
+			SQLiteDataReader reader = command.ExecuteReader();
+			
+			if(reader.HasRows)
+			{
+				reader.Read();
+				tbName.Text = reader.GetString(reader.GetOrdinal("UserName"));
+				tbEmail.Text = reader.GetString(reader.GetOrdinal("EMail"));
+				tbName.ReadOnly = true;
+				tbEmail.ReadOnly = true;
+				button3.Enabled = false;
+			}
+			else
+			{
+				tbName.Text = Environment.UserName;	
+			}
+			
+			connection.Close();
+		
+			//
+			// TODO: Add constructor code after the InitializeComponent() call.
+			//
+		}
+		
+		void Button1Click(object sender, EventArgs e)
+		{
+			folderBrowserDialog1.ShowDialog();
+			if(folderBrowserDialog1.SelectedPath.Length > 0)
+			{
+				listBox1.Items.Add(folderBrowserDialog1.SelectedPath);	
+			}			
+		}
+		
+		void Button2Click(object sender, EventArgs e)
+		{
+			listBox1.Items.Remove(listBox1.SelectedItem);
+		}
+		
+		void Button3Click(object sender, EventArgs e)
+		{
+			if(tbName.Text.Length > 4)
+			{
+			
+				if(tbEmail.Text.Length > 0)
+				{
+					Process p = new Process();
+					p.StartInfo.FileName = "gpg.exe";
+					p.StartInfo.Arguments = "--gen-key";
+					p.StartInfo.UseShellExecute = false;
+					p.StartInfo.RedirectStandardOutput = true;
+					p.Start();
+					
+					p.BeginOutputReadLine();
+					
+					SendKeys.SendWait("1{ENTER}");
+					SendKeys.SendWait("{ENTER}");
+					SendKeys.SendWait("{ENTER}");
+					SendKeys.SendWait("j{ENTER}");
+					SendKeys.Send(tbName.Text);
+					SendKeys.SendWait("{ENTER}");
+					SendKeys.Send(tbEmail.Text);
+					SendKeys.SendWait("{ENTER}");
+					SendKeys.SendWait("{ENTER}");
+					SendKeys.SendWait("F{ENTER}");
+					
+					p.WaitForExit();
+					int pExitCode = p.ExitCode;
+					p.Close();
+					
+					if(pExitCode == 0)
+					{
+						SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
+						connection.Open();
+						
+						SQLiteCommand command = new SQLiteCommand(connection);
+						command.CommandText = String.Format("insert into User (UserName,EMail,bKey) values ('{0}','{1}',1)",tbName.Text,tbEmail.Text);
+						command.ExecuteNonQuery();
+						
+						connection.Close();
+						
+						button3.Enabled = false;
+					}
+				}
+				else
+				{
+					MessageBox.Show("E-Mail Adresse muss ausgefüllt sein!");
+				}
+				
+			}
+			else
+			{
+				MessageBox.Show("Ihr Name muss mindestens 5 Zeichen lang sein!");
+			}
+			
+		}
+		
+		void BeendenToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+		
+		void Button4Click(object sender, EventArgs e)
+		{
+			if(tbName.Text.Length > 4)
+			{
+				btnEnc.Enabled = false;
+				for(int i = 0;i < listBox1.Items.Count;i++)
+				{
+					EncryptFolderOnce(listBox1.GetItemText(listBox1.Items[i]), listBox1.GetItemText(listBox1.Items[i]).Length);
+					EncryptFolder(listBox1.GetItemText(listBox1.Items[i]), listBox1.GetItemText(listBox1.Items[i]).Length);
+				}
+				MessageBox.Show("Verschlüsselung erledigt!");
+				btnEnc.Enabled = true;
+				label4.Text = "";
+			}
+			else
+			{
+				MessageBox.Show("Bitte einen Namen eingeben!");
+			}
+			
+		}
+		
+		void EncryptFolder(string sFolder, int iFolderLength)
+		{	
+			label4.Text = sFolder;		
+			label4.Refresh();
+			try
+			{
+				foreach(string d in Directory.GetDirectories(sFolder))
+				{
+					label4.Text = d;
+					label4.Refresh();
+					
+					foreach(string f in Directory.GetFiles(d))
+					{
+						label4.Text = f;
+						label4.Refresh();
+						
+						string sRootPath = Path.GetPathRoot(f);
+						sRootPath = sRootPath.Replace(":","_");
+						
+						string sArgument = "--yes -r " + tbName.Text + " -o \"" + tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3) + ".gpg\" -e " + "\"" + f + "\"";
+						
+						string sDirectory = tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3);
+						sDirectory = Path.GetDirectoryName(sDirectory);
+						System.IO.Directory.CreateDirectory(sDirectory);
+						
+						Process gpgEnc = new Process();
+						gpgEnc.StartInfo.FileName = "gpg.exe";
+						gpgEnc.StartInfo.Arguments = sArgument;
+						gpgEnc.StartInfo.UseShellExecute = false;
+						gpgEnc.StartInfo.RedirectStandardOutput = true;
+						gpgEnc.StartInfo.CreateNoWindow = true;
+						gpgEnc.Start();
+						gpgEnc.StandardOutput.ReadToEnd();
+						gpgEnc.WaitForExit();						
+						gpgEnc.Close();
+					}
+					EncryptFolder(d,iFolderLength);
+				}
+			}
+			catch(System.Exception excpt)
+			{
+				MessageBox.Show(excpt.Message);			
+			}
+		}
+		
+		void EncryptFolderOnce(string sFolder, int iFolderLength)
+		{
+			label4.Text = sFolder;
+			label4.Refresh();
+			
+			try
+			{
+				foreach(string f in Directory.GetFiles(sFolder))
+				{
+					label4.Text = f;
+					label4.Refresh();
+					
+					string sRootPath = Path.GetPathRoot(f);
+					sRootPath = sRootPath.Replace(":","_");					
+					
+					string sArgument = "--yes -r " + tbName.Text + " -o \"" + tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3) + ".gpg\" -e " + "\"" + f + "\"";
+					
+					string sDirectory = tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3);
+					sDirectory = Path.GetDirectoryName(sDirectory);
+					System.IO.Directory.CreateDirectory(sDirectory);
+					
+					Process gpgEnc = new Process();
+					gpgEnc.StartInfo.FileName = "gpg.exe";
+					gpgEnc.StartInfo.Arguments = sArgument;
+					gpgEnc.StartInfo.UseShellExecute = false;
+					gpgEnc.StartInfo.RedirectStandardOutput = true;
+					gpgEnc.StartInfo.CreateNoWindow = true;
+					gpgEnc.Start();
+					gpgEnc.StandardOutput.ReadToEnd();
+					gpgEnc.WaitForExit();						
+					gpgEnc.Close();
+				}
+			}
+			catch(System.Exception excpt)
+			{
+				MessageBox.Show(excpt.Message);
+			}
+		}
+		
+		void Button5Click(object sender, EventArgs e)
+		{
+			folderBrowserDialog1.ShowDialog();
+			if(folderBrowserDialog1.SelectedPath.Length > 0)
+			{
+				tbSyncFolder.Text = folderBrowserDialog1.SelectedPath;
+			}
+		}
+	}
+}
