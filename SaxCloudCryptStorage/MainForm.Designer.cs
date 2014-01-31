@@ -166,6 +166,7 @@ namespace SaxCloudCryptStorage
 			this.tbSyncFolder.Name = "tbSyncFolder";
 			this.tbSyncFolder.Size = new System.Drawing.Size(100, 20);
 			this.tbSyncFolder.TabIndex = 11;
+			this.tbSyncFolder.TextChanged += new System.EventHandler(this.TbSyncFolderTextChanged);
 			// 
 			// label3
 			// 
@@ -195,6 +196,7 @@ namespace SaxCloudCryptStorage
 			// 
 			// btnSpeichern
 			// 
+			this.btnSpeichern.Enabled = false;
 			this.btnSpeichern.Location = new System.Drawing.Point(278, 27);
 			this.btnSpeichern.Name = "btnSpeichern";
 			this.btnSpeichern.Size = new System.Drawing.Size(75, 23);

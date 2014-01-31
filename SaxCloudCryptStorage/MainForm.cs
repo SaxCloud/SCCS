@@ -37,13 +37,13 @@ namespace SaxCloudCryptStorage
 			command.ExecuteNonQuery();
 			
 			command.CommandText = "select * from User";
-			SQLiteDataReader reader = command.ExecuteReader();
+			SQLiteDataReader rUser = command.ExecuteReader();
 			
-			if(reader.HasRows)
+			if(rUser.HasRows)
 			{
-				reader.Read();
-				tbName.Text = reader.GetString(reader.GetOrdinal("UserName"));
-				tbEmail.Text = reader.GetString(reader.GetOrdinal("EMail"));
+				rUser.Read();
+				tbName.Text = rUser.GetString(rUser.GetOrdinal("UserName"));
+				tbEmail.Text = rUser.GetString(rUser.GetOrdinal("EMail"));
 				tbName.ReadOnly = true;
 				tbEmail.ReadOnly = true;
 				button3.Enabled = false;
@@ -53,33 +53,55 @@ namespace SaxCloudCryptStorage
 				tbName.Text = Environment.UserName;	
 			}
 			
-			command.CommandText = "select * from CryptFolder";
-			reader = command.ExecuteReader();
+			rUser.Close();
 			
-			if(reader.HasRows)
+			command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='CryptFolder'";
+			SQLiteDataReader rCCFolder = command.ExecuteReader();
+			
+			if(rCCFolder.HasRows)
 			{
-				reader.Read();
-				tbSyncFolder.Text = reader.GetString(reader.GetOrdinal("CryptFolderName"));
+				rCCFolder.Close();
+				
+				command.CommandText = "select * from CryptoFolder";
+				SQLiteDataReader rFCFolder  = command.ExecuteReader();
+				
+				rFCFolder.Read();
+				tbSyncFolder.Text = rFCFolder.GetString(rFCFolder.GetOrdinal("CryptFolderName"));
+				rFCFolder.Close();
+			}
+			else
+			{
+				rCCFolder.Close();
+				command.CommandText = "create table if not exists CryptFolder (ID integer not null primary key autoincrement, idUser integer not null, CryptFolderName varchar(300) not null)";
+				command.ExecuteNonQuery();
 			}
 			
-			command.CommandText = "select * from SourceFolder";
-			reader = command.ExecuteReader();
+			command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='SourceFolder'";
+			SQLiteDataReader rCSFolder = command.ExecuteReader();
 			
-			if(reader.HasRows)
+			if(rCSFolder.HasRows)
 			{
-				while(reader.Read())
+				rCSFolder.Close();
+				
+				command.CommandText = "select * from SourceFolder";
+				SQLiteDataReader rFSFolder = command.ExecuteReader();
+				
+				while(rFSFolder.Read())
 				{
 					int i = 0;
-					listBox1.Items[i] = reader.GetString(reader.GetOrdinal("SourceFolderName"));
+					listBox1.Items[i] = rFSFolder.GetString(rFSFolder.GetOrdinal("SourceFolderName"));
 					i++;
 				}
 			}
+			else
+			{
+				rCSFolder.Close();
+
+				command.CommandText = "create table if not exists SourceFolder (ID integer not null primary key autoincrement, idUser integer not null, SourceFolderName varchar(500) not null)";
+				command.ExecuteNonQuery();
+			}						
 			
 			connection.Close();
-		
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
 		}
 		
 		void Button1Click(object sender, EventArgs e)
@@ -88,12 +110,14 @@ namespace SaxCloudCryptStorage
 			if(folderBrowserDialog1.SelectedPath.Length > 0)
 			{
 				listBox1.Items.Add(folderBrowserDialog1.SelectedPath);	
+				btnSpeichern.Enabled = true;
 			}			
 		}
 		
 		void Button2Click(object sender, EventArgs e)
 		{
 			listBox1.Items.Remove(listBox1.SelectedItem);
+			btnSpeichern.Enabled = true;
 		}
 		
 		void Button3Click(object sender, EventArgs e)
@@ -276,18 +300,12 @@ namespace SaxCloudCryptStorage
 		
 		void BtnSpeichernClick(object sender, EventArgs e)
 		{
-			string iUser;
+			string sUser;
 			
 			SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
 			connection.Open();
 			
 			SQLiteCommand command = new SQLiteCommand(connection);
-			
-			command.CommandText = "create table if not exists CryptFolder (ID integer not null primary key autoincrement, idUser integer not null, CryptFolderName varchar(300) not null)";
-			command.ExecuteNonQuery();
-			
-			command.CommandText = "create table if not exists SourceFolder (ID integer not null primary key autoincrement, idUser integer not null, SourceFolderName varchar(500) not null)";
-			command.ExecuteNonQuery();
 			
 			command.CommandText = "select ID from User where Name = " + tbName.Text;
 			SQLiteDataReader reader = command.ExecuteReader();
@@ -295,14 +313,24 @@ namespace SaxCloudCryptStorage
 			if(reader.HasRows)
 			{
 				reader.Read();
-				iUser = reader.GetString(reader.GetOrdinal("ID"));
+				sUser = reader.GetString(reader.GetOrdinal("ID"));
 				
-				command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + iUser + tbSyncFolder.Text + ")";
-				command.ExecuteNonQuery();
+				command.CommandText = "select * from CryptFolder where idUser = " + sUser;
+				reader = command.ExecuteReader();
+				
+				if(reader.HasRows)
+				{
+					reader.Read();
+					if(reader.GetString(reader.GetOrdinal("CryptFolderName")) != tbSyncFolder.Text)
+					{
+						command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + sUser + ", " + tbSyncFolder.Text + ")";
+						command.ExecuteNonQuery();
+					}
+				}
 				
 				for(int i = 0;i < listBox1.Items.Count;i++)
 				{
-					command.CommandText = "insert into SourceFolder (idUser, SourceFolderName) values (" + iUser + listBox1.GetItemText(listBox1.Items[i]) + ")";
+					command.CommandText = "insert into SourceFolder (idUser, SourceFolderName) values (" + sUser + ", " + listBox1.GetItemText(listBox1.Items[i]) + ")";
 				}
 			}
 			else
@@ -311,6 +339,12 @@ namespace SaxCloudCryptStorage
 			}					
 			
 			connection.Close();
+			btnSpeichern.Enabled = false;
+		}
+		
+		void TbSyncFolderTextChanged(object sender, EventArgs e)
+		{
+			btnSpeichern.Enabled = true;			
 		}
 	}
 }
