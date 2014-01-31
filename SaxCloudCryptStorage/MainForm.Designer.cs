@@ -54,7 +54,13 @@ namespace SaxCloudCryptStorage
 			this.button5 = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.btnSpeichern = new System.Windows.Forms.Button();
+			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.menuStrip1.SuspendLayout();
+			this.tabControl1.SuspendLayout();
+			this.tabPage1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -63,7 +69,7 @@ namespace SaxCloudCryptStorage
 									this.dateiToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(468, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(397, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -85,14 +91,14 @@ namespace SaxCloudCryptStorage
 			// listBox1
 			// 
 			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(278, 64);
+			this.listBox1.Location = new System.Drawing.Point(6, 72);
 			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(178, 173);
+			this.listBox1.Size = new System.Drawing.Size(244, 95);
 			this.listBox1.TabIndex = 1;
 			// 
 			// btnFolder
 			// 
-			this.btnFolder.Location = new System.Drawing.Point(278, 243);
+			this.btnFolder.Location = new System.Drawing.Point(6, 43);
 			this.btnFolder.Name = "btnFolder";
 			this.btnFolder.Size = new System.Drawing.Size(97, 23);
 			this.btnFolder.TabIndex = 2;
@@ -102,7 +108,7 @@ namespace SaxCloudCryptStorage
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point(381, 243);
+			this.btnDelete.Location = new System.Drawing.Point(175, 43);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(75, 23);
 			this.btnDelete.TabIndex = 3;
@@ -112,14 +118,14 @@ namespace SaxCloudCryptStorage
 			// 
 			// tbName
 			// 
-			this.tbName.Location = new System.Drawing.Point(124, 64);
+			this.tbName.Location = new System.Drawing.Point(115, 38);
 			this.tbName.Name = "tbName";
 			this.tbName.Size = new System.Drawing.Size(101, 20);
 			this.tbName.TabIndex = 6;
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(14, 64);
+			this.label1.Location = new System.Drawing.Point(5, 38);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(81, 20);
 			this.label1.TabIndex = 5;
@@ -127,7 +133,7 @@ namespace SaxCloudCryptStorage
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(14, 27);
+			this.button3.Location = new System.Drawing.Point(3, 6);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(112, 23);
 			this.button3.TabIndex = 7;
@@ -137,14 +143,14 @@ namespace SaxCloudCryptStorage
 			// 
 			// tbEmail
 			// 
-			this.tbEmail.Location = new System.Drawing.Point(124, 101);
+			this.tbEmail.Location = new System.Drawing.Point(115, 75);
 			this.tbEmail.Name = "tbEmail";
 			this.tbEmail.Size = new System.Drawing.Size(100, 20);
 			this.tbEmail.TabIndex = 8;
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(14, 101);
+			this.label2.Location = new System.Drawing.Point(5, 75);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(100, 19);
 			this.label2.TabIndex = 9;
@@ -152,9 +158,9 @@ namespace SaxCloudCryptStorage
 			// 
 			// btnEnc
 			// 
-			this.btnEnc.Location = new System.Drawing.Point(14, 244);
+			this.btnEnc.Location = new System.Drawing.Point(6, 6);
 			this.btnEnc.Name = "btnEnc";
-			this.btnEnc.Size = new System.Drawing.Size(111, 23);
+			this.btnEnc.Size = new System.Drawing.Size(97, 23);
 			this.btnEnc.TabIndex = 10;
 			this.btnEnc.Text = "Verschlüsseln";
 			this.btnEnc.UseVisualStyleBackColor = true;
@@ -162,15 +168,15 @@ namespace SaxCloudCryptStorage
 			// 
 			// tbSyncFolder
 			// 
-			this.tbSyncFolder.Location = new System.Drawing.Point(124, 216);
+			this.tbSyncFolder.Location = new System.Drawing.Point(84, 170);
 			this.tbSyncFolder.Name = "tbSyncFolder";
-			this.tbSyncFolder.Size = new System.Drawing.Size(100, 20);
+			this.tbSyncFolder.Size = new System.Drawing.Size(136, 20);
 			this.tbSyncFolder.TabIndex = 11;
 			this.tbSyncFolder.TextChanged += new System.EventHandler(this.TbSyncFolderTextChanged);
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(14, 216);
+			this.label3.Location = new System.Drawing.Point(8, 173);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(100, 23);
 			this.label3.TabIndex = 12;
@@ -178,7 +184,7 @@ namespace SaxCloudCryptStorage
 			// 
 			// button5
 			// 
-			this.button5.Location = new System.Drawing.Point(230, 216);
+			this.button5.Location = new System.Drawing.Point(226, 169);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(24, 20);
 			this.button5.TabIndex = 13;
@@ -197,7 +203,7 @@ namespace SaxCloudCryptStorage
 			// btnSpeichern
 			// 
 			this.btnSpeichern.Enabled = false;
-			this.btnSpeichern.Location = new System.Drawing.Point(278, 27);
+			this.btnSpeichern.Location = new System.Drawing.Point(175, 6);
 			this.btnSpeichern.Name = "btnSpeichern";
 			this.btnSpeichern.Size = new System.Drawing.Size(75, 23);
 			this.btnSpeichern.TabIndex = 16;
@@ -205,34 +211,73 @@ namespace SaxCloudCryptStorage
 			this.btnSpeichern.UseVisualStyleBackColor = true;
 			this.btnSpeichern.Click += new System.EventHandler(this.BtnSpeichernClick);
 			// 
+			// tabControl1
+			// 
+			this.tabControl1.Controls.Add(this.tabPage1);
+			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Location = new System.Drawing.Point(14, 27);
+			this.tabControl1.Name = "tabControl1";
+			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.Size = new System.Drawing.Size(378, 226);
+			this.tabControl1.TabIndex = 17;
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Controls.Add(this.button3);
+			this.tabPage1.Controls.Add(this.tbEmail);
+			this.tabPage1.Controls.Add(this.tbName);
+			this.tabPage1.Controls.Add(this.label1);
+			this.tabPage1.Controls.Add(this.label2);
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(370, 200);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "tabPage1";
+			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Controls.Add(this.btnEnc);
+			this.tabPage2.Controls.Add(this.btnSpeichern);
+			this.tabPage2.Controls.Add(this.listBox1);
+			this.tabPage2.Controls.Add(this.btnFolder);
+			this.tabPage2.Controls.Add(this.button5);
+			this.tabPage2.Controls.Add(this.btnDelete);
+			this.tabPage2.Controls.Add(this.label3);
+			this.tabPage2.Controls.Add(this.tbSyncFolder);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(370, 200);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(468, 335);
-			this.Controls.Add(this.btnSpeichern);
+			this.ClientSize = new System.Drawing.Size(397, 335);
+			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.button5);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.tbSyncFolder);
-			this.Controls.Add(this.btnEnc);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.tbEmail);
-			this.Controls.Add(this.button3);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.tbName);
-			this.Controls.Add(this.btnDelete);
-			this.Controls.Add(this.btnFolder);
-			this.Controls.Add(this.listBox1);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.Text = "SaxCloudCryptStorage";
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.tabControl1.ResumeLayout(false);
+			this.tabPage1.ResumeLayout(false);
+			this.tabPage1.PerformLayout();
+			this.tabPage2.ResumeLayout(false);
+			this.tabPage2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.Button btnSpeichern;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Button button5;
