@@ -55,12 +55,19 @@ namespace SaxCloudCryptStorage
 			this.label4 = new System.Windows.Forms.Label();
 			this.btnSpeichern = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.tpKey = new System.Windows.Forms.TabPage();
+			this.tpFolder = new System.Windows.Forms.TabPage();
+			this.tpCloud = new System.Windows.Forms.TabPage();
+			this.btnSync = new System.Windows.Forms.Button();
+			this.tbUserName = new System.Windows.Forms.TextBox();
+			this.tbPassword = new System.Windows.Forms.TextBox();
+			this.lblUsername = new System.Windows.Forms.Label();
+			this.lblPassword = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
-			this.tabPage1.SuspendLayout();
-			this.tabPage2.SuspendLayout();
+			this.tpKey.SuspendLayout();
+			this.tpFolder.SuspendLayout();
+			this.tpCloud.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -69,7 +76,7 @@ namespace SaxCloudCryptStorage
 									this.dateiToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(397, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(298, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -196,7 +203,7 @@ namespace SaxCloudCryptStorage
 			// 
 			this.label4.Location = new System.Drawing.Point(14, 270);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(442, 56);
+			this.label4.Size = new System.Drawing.Size(271, 56);
 			this.label4.TabIndex = 15;
 			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
@@ -213,52 +220,110 @@ namespace SaxCloudCryptStorage
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Controls.Add(this.tabPage1);
-			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Controls.Add(this.tpKey);
+			this.tabControl1.Controls.Add(this.tpFolder);
+			this.tabControl1.Controls.Add(this.tpCloud);
 			this.tabControl1.Location = new System.Drawing.Point(14, 27);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(378, 226);
+			this.tabControl1.Size = new System.Drawing.Size(271, 226);
 			this.tabControl1.TabIndex = 17;
 			// 
-			// tabPage1
+			// tpKey
 			// 
-			this.tabPage1.Controls.Add(this.button3);
-			this.tabPage1.Controls.Add(this.tbEmail);
-			this.tabPage1.Controls.Add(this.tbName);
-			this.tabPage1.Controls.Add(this.label1);
-			this.tabPage1.Controls.Add(this.label2);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(370, 200);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "tabPage1";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.tpKey.Controls.Add(this.button3);
+			this.tpKey.Controls.Add(this.tbEmail);
+			this.tpKey.Controls.Add(this.tbName);
+			this.tpKey.Controls.Add(this.label1);
+			this.tpKey.Controls.Add(this.label2);
+			this.tpKey.Location = new System.Drawing.Point(4, 22);
+			this.tpKey.Name = "tpKey";
+			this.tpKey.Padding = new System.Windows.Forms.Padding(3);
+			this.tpKey.Size = new System.Drawing.Size(263, 200);
+			this.tpKey.TabIndex = 0;
+			this.tpKey.Text = "Schlüssel";
+			this.tpKey.UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
+			// tpFolder
 			// 
-			this.tabPage2.Controls.Add(this.btnEnc);
-			this.tabPage2.Controls.Add(this.btnSpeichern);
-			this.tabPage2.Controls.Add(this.listBox1);
-			this.tabPage2.Controls.Add(this.btnFolder);
-			this.tabPage2.Controls.Add(this.button5);
-			this.tabPage2.Controls.Add(this.btnDelete);
-			this.tabPage2.Controls.Add(this.label3);
-			this.tabPage2.Controls.Add(this.tbSyncFolder);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(370, 200);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "tabPage2";
-			this.tabPage2.UseVisualStyleBackColor = true;
+			this.tpFolder.Controls.Add(this.btnEnc);
+			this.tpFolder.Controls.Add(this.btnSpeichern);
+			this.tpFolder.Controls.Add(this.listBox1);
+			this.tpFolder.Controls.Add(this.btnFolder);
+			this.tpFolder.Controls.Add(this.button5);
+			this.tpFolder.Controls.Add(this.btnDelete);
+			this.tpFolder.Controls.Add(this.label3);
+			this.tpFolder.Controls.Add(this.tbSyncFolder);
+			this.tpFolder.Location = new System.Drawing.Point(4, 22);
+			this.tpFolder.Name = "tpFolder";
+			this.tpFolder.Padding = new System.Windows.Forms.Padding(3);
+			this.tpFolder.Size = new System.Drawing.Size(263, 200);
+			this.tpFolder.TabIndex = 1;
+			this.tpFolder.Text = "Ordner";
+			this.tpFolder.UseVisualStyleBackColor = true;
+			// 
+			// tpCloud
+			// 
+			this.tpCloud.Controls.Add(this.lblPassword);
+			this.tpCloud.Controls.Add(this.lblUsername);
+			this.tpCloud.Controls.Add(this.tbPassword);
+			this.tpCloud.Controls.Add(this.tbUserName);
+			this.tpCloud.Controls.Add(this.btnSync);
+			this.tpCloud.Location = new System.Drawing.Point(4, 22);
+			this.tpCloud.Name = "tpCloud";
+			this.tpCloud.Padding = new System.Windows.Forms.Padding(3);
+			this.tpCloud.Size = new System.Drawing.Size(263, 200);
+			this.tpCloud.TabIndex = 2;
+			this.tpCloud.Text = "Cloud";
+			this.tpCloud.UseVisualStyleBackColor = true;
+			// 
+			// btnSync
+			// 
+			this.btnSync.Location = new System.Drawing.Point(77, 75);
+			this.btnSync.Name = "btnSync";
+			this.btnSync.Size = new System.Drawing.Size(100, 51);
+			this.btnSync.TabIndex = 0;
+			this.btnSync.Text = "Synchronisieren";
+			this.btnSync.UseVisualStyleBackColor = true;
+			// 
+			// tbUserName
+			// 
+			this.tbUserName.Location = new System.Drawing.Point(157, 7);
+			this.tbUserName.Name = "tbUserName";
+			this.tbUserName.Size = new System.Drawing.Size(100, 20);
+			this.tbUserName.TabIndex = 1;
+			// 
+			// tbPassword
+			// 
+			this.tbPassword.Location = new System.Drawing.Point(156, 34);
+			this.tbPassword.Name = "tbPassword";
+			this.tbPassword.Size = new System.Drawing.Size(100, 20);
+			this.tbPassword.TabIndex = 2;
+			this.tbPassword.UseSystemPasswordChar = true;
+			// 
+			// lblUsername
+			// 
+			this.lblUsername.Location = new System.Drawing.Point(7, 3);
+			this.lblUsername.Name = "lblUsername";
+			this.lblUsername.Size = new System.Drawing.Size(100, 23);
+			this.lblUsername.TabIndex = 3;
+			this.lblUsername.Text = "Benutzername:";
+			this.lblUsername.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
+			// lblPassword
+			// 
+			this.lblPassword.Location = new System.Drawing.Point(7, 30);
+			this.lblPassword.Name = "lblPassword";
+			this.lblPassword.Size = new System.Drawing.Size(100, 23);
+			this.lblPassword.TabIndex = 4;
+			this.lblPassword.Text = "Passwort:";
+			this.lblPassword.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(397, 335);
+			this.ClientSize = new System.Drawing.Size(298, 335);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.menuStrip1);
@@ -268,15 +333,23 @@ namespace SaxCloudCryptStorage
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
-			this.tabPage1.PerformLayout();
-			this.tabPage2.ResumeLayout(false);
-			this.tabPage2.PerformLayout();
+			this.tpKey.ResumeLayout(false);
+			this.tpKey.PerformLayout();
+			this.tpFolder.ResumeLayout(false);
+			this.tpFolder.PerformLayout();
+			this.tpCloud.ResumeLayout(false);
+			this.tpCloud.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.Label lblUsername;
+		private System.Windows.Forms.Label lblPassword;
+		private System.Windows.Forms.Button btnSync;
+		private System.Windows.Forms.TextBox tbUserName;
+		private System.Windows.Forms.TextBox tbPassword;
+		private System.Windows.Forms.TabPage tpCloud;
+		private System.Windows.Forms.TabPage tpFolder;
+		private System.Windows.Forms.TabPage tpKey;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.Button btnSpeichern;
 		private System.Windows.Forms.Label label4;
