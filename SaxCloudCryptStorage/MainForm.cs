@@ -409,6 +409,8 @@ namespace SaxCloudCryptStorage
 		{
 			string sRemotePW;
 			
+			MessageBox.Show("Bitte geben Sie ihr SaxCloud Account Passwort an");
+			
 			
 		}
 	}

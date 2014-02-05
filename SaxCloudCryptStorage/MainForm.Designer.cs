@@ -58,12 +58,12 @@ namespace SaxCloudCryptStorage
 			this.tpKey = new System.Windows.Forms.TabPage();
 			this.tpFolder = new System.Windows.Forms.TabPage();
 			this.tpCloud = new System.Windows.Forms.TabPage();
+			this.tbPassword = new System.Windows.Forms.MaskedTextBox();
+			this.lblPassword = new System.Windows.Forms.Label();
 			this.btnSSH = new System.Windows.Forms.Button();
 			this.lblUsername = new System.Windows.Forms.Label();
 			this.tbUserName = new System.Windows.Forms.TextBox();
 			this.btnSync = new System.Windows.Forms.Button();
-			this.lblPassword = new System.Windows.Forms.Label();
-			this.tbPassword = new System.Windows.Forms.MaskedTextBox();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpKey.SuspendLayout();
@@ -278,6 +278,23 @@ namespace SaxCloudCryptStorage
 			this.tpCloud.Text = "Cloud";
 			this.tpCloud.UseVisualStyleBackColor = true;
 			// 
+			// tbPassword
+			// 
+			this.tbPassword.Location = new System.Drawing.Point(157, 49);
+			this.tbPassword.Name = "tbPassword";
+			this.tbPassword.Size = new System.Drawing.Size(100, 20);
+			this.tbPassword.TabIndex = 6;
+			this.tbPassword.Visible = false;
+			// 
+			// lblPassword
+			// 
+			this.lblPassword.Location = new System.Drawing.Point(7, 47);
+			this.lblPassword.Name = "lblPassword";
+			this.lblPassword.Size = new System.Drawing.Size(100, 23);
+			this.lblPassword.TabIndex = 5;
+			this.lblPassword.Text = "Passwort:";
+			this.lblPassword.Visible = false;
+			// 
 			// btnSSH
 			// 
 			this.btnSSH.Location = new System.Drawing.Point(7, 144);
@@ -313,21 +330,6 @@ namespace SaxCloudCryptStorage
 			this.btnSync.Text = "Synchronisieren";
 			this.btnSync.UseVisualStyleBackColor = true;
 			this.btnSync.Click += new System.EventHandler(this.BtnSyncClick);
-			// 
-			// lblPassword
-			// 
-			this.lblPassword.Location = new System.Drawing.Point(7, 47);
-			this.lblPassword.Name = "lblPassword";
-			this.lblPassword.Size = new System.Drawing.Size(100, 23);
-			this.lblPassword.TabIndex = 5;
-			this.lblPassword.Text = "Passwort:";
-			// 
-			// tbPassword
-			// 
-			this.tbPassword.Location = new System.Drawing.Point(157, 49);
-			this.tbPassword.Name = "tbPassword";
-			this.tbPassword.Size = new System.Drawing.Size(100, 20);
-			this.tbPassword.TabIndex = 6;
 			// 
 			// MainForm
 			// 
