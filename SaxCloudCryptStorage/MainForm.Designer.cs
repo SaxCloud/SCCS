@@ -58,11 +58,12 @@ namespace SaxCloudCryptStorage
 			this.tpKey = new System.Windows.Forms.TabPage();
 			this.tpFolder = new System.Windows.Forms.TabPage();
 			this.tpCloud = new System.Windows.Forms.TabPage();
-			this.btnSync = new System.Windows.Forms.Button();
-			this.tbUserName = new System.Windows.Forms.TextBox();
-			this.tbPassword = new System.Windows.Forms.TextBox();
+			this.btnSSH = new System.Windows.Forms.Button();
 			this.lblUsername = new System.Windows.Forms.Label();
+			this.tbUserName = new System.Windows.Forms.TextBox();
+			this.btnSync = new System.Windows.Forms.Button();
 			this.lblPassword = new System.Windows.Forms.Label();
+			this.tbPassword = new System.Windows.Forms.MaskedTextBox();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpKey.SuspendLayout();
@@ -127,7 +128,7 @@ namespace SaxCloudCryptStorage
 			// 
 			this.tbName.Location = new System.Drawing.Point(115, 38);
 			this.tbName.Name = "tbName";
-			this.tbName.Size = new System.Drawing.Size(101, 20);
+			this.tbName.Size = new System.Drawing.Size(142, 20);
 			this.tbName.TabIndex = 6;
 			// 
 			// label1
@@ -152,7 +153,7 @@ namespace SaxCloudCryptStorage
 			// 
 			this.tbEmail.Location = new System.Drawing.Point(115, 75);
 			this.tbEmail.Name = "tbEmail";
-			this.tbEmail.Size = new System.Drawing.Size(100, 20);
+			this.tbEmail.Size = new System.Drawing.Size(142, 20);
 			this.tbEmail.TabIndex = 8;
 			// 
 			// label2
@@ -175,17 +176,16 @@ namespace SaxCloudCryptStorage
 			// 
 			// tbSyncFolder
 			// 
-			this.tbSyncFolder.Location = new System.Drawing.Point(84, 170);
+			this.tbSyncFolder.Location = new System.Drawing.Point(89, 170);
 			this.tbSyncFolder.Name = "tbSyncFolder";
-			this.tbSyncFolder.Size = new System.Drawing.Size(136, 20);
+			this.tbSyncFolder.Size = new System.Drawing.Size(131, 20);
 			this.tbSyncFolder.TabIndex = 11;
-			this.tbSyncFolder.TextChanged += new System.EventHandler(this.TbSyncFolderTextChanged);
 			// 
 			// label3
 			// 
 			this.label3.Location = new System.Drawing.Point(8, 173);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(100, 23);
+			this.label3.Size = new System.Drawing.Size(75, 23);
 			this.label3.TabIndex = 12;
 			this.label3.Text = "Sync Ordner:";
 			// 
@@ -264,9 +264,10 @@ namespace SaxCloudCryptStorage
 			// 
 			// tpCloud
 			// 
-			this.tpCloud.Controls.Add(this.lblPassword);
-			this.tpCloud.Controls.Add(this.lblUsername);
 			this.tpCloud.Controls.Add(this.tbPassword);
+			this.tpCloud.Controls.Add(this.lblPassword);
+			this.tpCloud.Controls.Add(this.btnSSH);
+			this.tpCloud.Controls.Add(this.lblUsername);
 			this.tpCloud.Controls.Add(this.tbUserName);
 			this.tpCloud.Controls.Add(this.btnSync);
 			this.tpCloud.Location = new System.Drawing.Point(4, 22);
@@ -277,29 +278,15 @@ namespace SaxCloudCryptStorage
 			this.tpCloud.Text = "Cloud";
 			this.tpCloud.UseVisualStyleBackColor = true;
 			// 
-			// btnSync
+			// btnSSH
 			// 
-			this.btnSync.Location = new System.Drawing.Point(77, 75);
-			this.btnSync.Name = "btnSync";
-			this.btnSync.Size = new System.Drawing.Size(100, 51);
-			this.btnSync.TabIndex = 0;
-			this.btnSync.Text = "Synchronisieren";
-			this.btnSync.UseVisualStyleBackColor = true;
-			// 
-			// tbUserName
-			// 
-			this.tbUserName.Location = new System.Drawing.Point(157, 7);
-			this.tbUserName.Name = "tbUserName";
-			this.tbUserName.Size = new System.Drawing.Size(100, 20);
-			this.tbUserName.TabIndex = 1;
-			// 
-			// tbPassword
-			// 
-			this.tbPassword.Location = new System.Drawing.Point(156, 34);
-			this.tbPassword.Name = "tbPassword";
-			this.tbPassword.Size = new System.Drawing.Size(100, 20);
-			this.tbPassword.TabIndex = 2;
-			this.tbPassword.UseSystemPasswordChar = true;
+			this.btnSSH.Location = new System.Drawing.Point(7, 144);
+			this.btnSSH.Name = "btnSSH";
+			this.btnSSH.Size = new System.Drawing.Size(100, 50);
+			this.btnSSH.TabIndex = 4;
+			this.btnSSH.Text = "Verbindung herstellen";
+			this.btnSSH.UseVisualStyleBackColor = true;
+			this.btnSSH.Click += new System.EventHandler(this.BtnSSHClick);
 			// 
 			// lblUsername
 			// 
@@ -310,14 +297,37 @@ namespace SaxCloudCryptStorage
 			this.lblUsername.Text = "Benutzername:";
 			this.lblUsername.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
+			// tbUserName
+			// 
+			this.tbUserName.Location = new System.Drawing.Point(157, 7);
+			this.tbUserName.Name = "tbUserName";
+			this.tbUserName.Size = new System.Drawing.Size(100, 20);
+			this.tbUserName.TabIndex = 1;
+			// 
+			// btnSync
+			// 
+			this.btnSync.Location = new System.Drawing.Point(157, 144);
+			this.btnSync.Name = "btnSync";
+			this.btnSync.Size = new System.Drawing.Size(100, 50);
+			this.btnSync.TabIndex = 0;
+			this.btnSync.Text = "Synchronisieren";
+			this.btnSync.UseVisualStyleBackColor = true;
+			this.btnSync.Click += new System.EventHandler(this.BtnSyncClick);
+			// 
 			// lblPassword
 			// 
-			this.lblPassword.Location = new System.Drawing.Point(7, 30);
+			this.lblPassword.Location = new System.Drawing.Point(7, 47);
 			this.lblPassword.Name = "lblPassword";
 			this.lblPassword.Size = new System.Drawing.Size(100, 23);
-			this.lblPassword.TabIndex = 4;
+			this.lblPassword.TabIndex = 5;
 			this.lblPassword.Text = "Passwort:";
-			this.lblPassword.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			// 
+			// tbPassword
+			// 
+			this.tbPassword.Location = new System.Drawing.Point(157, 49);
+			this.tbPassword.Name = "tbPassword";
+			this.tbPassword.Size = new System.Drawing.Size(100, 20);
+			this.tbPassword.TabIndex = 6;
 			// 
 			// MainForm
 			// 
@@ -342,11 +352,12 @@ namespace SaxCloudCryptStorage
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		private System.Windows.Forms.Label lblUsername;
 		private System.Windows.Forms.Label lblPassword;
+		private System.Windows.Forms.MaskedTextBox tbPassword;
+		private System.Windows.Forms.Button btnSSH;
+		private System.Windows.Forms.Label lblUsername;
 		private System.Windows.Forms.Button btnSync;
 		private System.Windows.Forms.TextBox tbUserName;
-		private System.Windows.Forms.TextBox tbPassword;
 		private System.Windows.Forms.TabPage tpCloud;
 		private System.Windows.Forms.TabPage tpFolder;
 		private System.Windows.Forms.TabPage tpKey;

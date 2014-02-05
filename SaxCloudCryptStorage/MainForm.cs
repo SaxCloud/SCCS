@@ -62,11 +62,14 @@ namespace SaxCloudCryptStorage
 			{
 				rCCFolder.Close();
 				
-				command.CommandText = "select * from CryptoFolder";
+				command.CommandText = "select * from CryptFolder";
 				SQLiteDataReader rFCFolder  = command.ExecuteReader();
 				
-				rFCFolder.Read();
-				tbSyncFolder.Text = rFCFolder.GetString(rFCFolder.GetOrdinal("CryptFolderName"));
+				if(rFCFolder.HasRows)
+				{
+					rFCFolder.Read();
+					tbSyncFolder.Text = rFCFolder.GetString(rFCFolder.GetOrdinal("CryptFolderName"));					
+				}
 				rFCFolder.Close();
 			}
 			else
@@ -87,10 +90,8 @@ namespace SaxCloudCryptStorage
 				SQLiteDataReader rFSFolder = command.ExecuteReader();
 				
 				while(rFSFolder.Read())
-				{
-					int i = 0;
-					listBox1.Items[i] = rFSFolder.GetString(rFSFolder.GetOrdinal("SourceFolderName"));
-					i++;
+				{					
+					listBox1.Items.Add(rFSFolder.GetString(rFSFolder.GetOrdinal("SourceFolderName")));
 				}
 			}
 			else
@@ -214,33 +215,40 @@ namespace SaxCloudCryptStorage
 					label4.Text = d;
 					label4.Refresh();
 					
-					foreach(string f in Directory.GetFiles(d))
+					try
 					{
-						label4.Text = f;
-						label4.Refresh();
-						
-						
-						
-						string sRootPath = Path.GetPathRoot(f);
-						sRootPath = sRootPath.Replace(":","_");
-						
-						string sArgument = "--yes -r " + tbName.Text + " -o \"" + tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3) + ".gpg\" -e " + "\"" + f + "\"";
-						
-						string sDirectory = tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3);
-						sDirectory = Path.GetDirectoryName(sDirectory);
-						System.IO.Directory.CreateDirectory(sDirectory);
-						
-						Process gpgEnc = new Process();
-						gpgEnc.StartInfo.FileName = "gpg.exe";
-						gpgEnc.StartInfo.Arguments = sArgument;
-						gpgEnc.StartInfo.UseShellExecute = false;
-						gpgEnc.StartInfo.RedirectStandardOutput = true;
-						gpgEnc.StartInfo.CreateNoWindow = true;
-						gpgEnc.Start();
-						gpgEnc.StandardOutput.ReadToEnd();
-						gpgEnc.WaitForExit();						
-						gpgEnc.Close();
+						foreach(string f in Directory.GetFiles(d))
+						{
+							label4.Text = f;
+							label4.Refresh();
+							tpFolder.Refresh();
+							
+							string sRootPath = Path.GetPathRoot(f);
+							sRootPath = sRootPath.Replace(":","_");
+							
+							string sArgument = "--yes -r " + tbName.Text + " -o \"" + tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3) + ".gpg\" -e " + "\"" + f + "\"";
+							
+							string sDirectory = tbSyncFolder.Text + "\\" + sRootPath + f.Substring(3);
+							sDirectory = Path.GetDirectoryName(sDirectory);
+							System.IO.Directory.CreateDirectory(sDirectory);
+							
+							Process gpgEnc = new Process();
+							gpgEnc.StartInfo.FileName = "gpg.exe";
+							gpgEnc.StartInfo.Arguments = sArgument;
+							gpgEnc.StartInfo.UseShellExecute = false;
+							gpgEnc.StartInfo.RedirectStandardOutput = true;
+							gpgEnc.StartInfo.CreateNoWindow = true;
+							gpgEnc.Start();
+							gpgEnc.StandardOutput.ReadToEnd();
+							gpgEnc.WaitForExit();						
+							gpgEnc.Close();
+						}
 					}
+					catch(System.Exception excpt)
+					{
+						MessageBox.Show(excpt.Message);
+					}
+					
 					EncryptFolder(d,iFolderLength);
 				}
 			}
@@ -261,6 +269,7 @@ namespace SaxCloudCryptStorage
 				{
 					label4.Text = f;
 					label4.Refresh();
+					tpFolder.Refresh();
 					
 					string sRootPath = Path.GetPathRoot(f);
 					sRootPath = sRootPath.Replace(":","_");					
@@ -295,27 +304,30 @@ namespace SaxCloudCryptStorage
 			if(folderBrowserDialog1.SelectedPath.Length > 0)
 			{
 				tbSyncFolder.Text = folderBrowserDialog1.SelectedPath;
+				btnSpeichern.Enabled = true;
 			}
 		}
 		
 		void BtnSpeichernClick(object sender, EventArgs e)
 		{
-			string sUser;
+			int iUser;
 			
 			SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
 			connection.Open();
 			
 			SQLiteCommand command = new SQLiteCommand(connection);
 			
-			command.CommandText = "select ID from User where Name = " + tbName.Text;
+			command.CommandText = "select * from User where UserName = '" + tbName.Text + "'";
 			SQLiteDataReader reader = command.ExecuteReader();
 			
 			if(reader.HasRows)
 			{
 				reader.Read();
-				sUser = reader.GetString(reader.GetOrdinal("ID"));
+				iUser = reader.GetInt32(reader.GetOrdinal("ID"));
 				
-				command.CommandText = "select * from CryptFolder where idUser = " + sUser;
+				reader.Close();
+				
+				command.CommandText = "select * from CryptFolder where idUser = '" + iUser + "'";
 				reader = command.ExecuteReader();
 				
 				if(reader.HasRows)
@@ -323,14 +335,25 @@ namespace SaxCloudCryptStorage
 					reader.Read();
 					if(reader.GetString(reader.GetOrdinal("CryptFolderName")) != tbSyncFolder.Text)
 					{
-						command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + sUser + ", " + tbSyncFolder.Text + ")";
+						reader.Close();
+						command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + iUser + ", '" + tbSyncFolder.Text + "')";
 						command.ExecuteNonQuery();
 					}
 				}
+				else
+				{
+					reader.Close();
+					command.CommandText = "insert into CryptFolder (idUser, CryptFolderName) values (" + iUser + ", '" + tbSyncFolder.Text + "')";
+					command.ExecuteNonQuery();
+				}
+				
+				reader.Close();
 				
 				for(int i = 0;i < listBox1.Items.Count;i++)
 				{
-					command.CommandText = "insert into SourceFolder (idUser, SourceFolderName) values (" + sUser + ", " + listBox1.GetItemText(listBox1.Items[i]) + ")";
+					MessageBox.Show(listBox1.GetItemText(listBox1.Items[i]));
+					command.CommandText = "insert into SourceFolder (idUser, SourceFolderName) values (" + iUser + ", '" + listBox1.GetItemText(listBox1.Items[i]) + "')";
+					command.ExecuteNonQuery();
 				}
 			}
 			else
@@ -342,9 +365,51 @@ namespace SaxCloudCryptStorage
 			btnSpeichern.Enabled = false;
 		}
 		
-		void TbSyncFolderTextChanged(object sender, EventArgs e)
+		void BtnSyncClick(object sender, EventArgs e)
 		{
-			btnSpeichern.Enabled = true;			
+			// rsync.exe -ru --delete --progress /cygdrive/f/SYNC -e ssh "root@192.168.178.77:/root/sync/"			
+		}
+		
+		void BtnSSHClick(object sender, EventArgs e)
+		{
+			int iUser;
+			
+			SQLiteConnection connection = new SQLiteConnection("Data Source=sccs.db");
+			connection.Open();			
+			
+			SQLiteCommand command = new SQLiteCommand(connection);
+			
+			command.CommandText = "select * from User where UserName = '" + tbUserName.Text + "'";
+			SQLiteDataReader reader = command.ExecuteReader();
+			
+			iUser = reader.GetInt32(reader.GetOrdinal("ID"));			
+			reader.Close();
+			
+			command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='RemoteFolder'";
+			SQLiteDataReader reader = command.ExecuteReader();
+			
+			
+			if(reader.HasRows)
+			{
+				reader.Close();
+			}
+			else
+			{
+				reader.Close();
+				
+				command.CommandText = "create table if not exists RemoteFolder (ID integer not null primary key autoincrement, idUser integer not null, RemoteUserName varchar(40) not null, RemoteFolderName varchar(300) not null)";
+				command.ExecuteNonQuery();
+				
+				command.CommandText = "insert into RemoteFolder (idUser, RemoteUserName, RemoteFolder) values (" + iUser + " , " + tbUserName.Text + ", /home/" + tbUserName.Text + "/sync)";
+				
+			}
+		}
+		
+		void SSHCreate(string sRemoteUser)
+		{
+			string sRemotePW;
+			
+			
 		}
 	}
 }
