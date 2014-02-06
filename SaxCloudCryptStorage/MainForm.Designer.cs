@@ -58,8 +58,6 @@ namespace SaxCloudCryptStorage
 			this.tpKey = new System.Windows.Forms.TabPage();
 			this.tpFolder = new System.Windows.Forms.TabPage();
 			this.tpCloud = new System.Windows.Forms.TabPage();
-			this.tbPassword = new System.Windows.Forms.MaskedTextBox();
-			this.lblPassword = new System.Windows.Forms.Label();
 			this.btnSSH = new System.Windows.Forms.Button();
 			this.lblUsername = new System.Windows.Forms.Label();
 			this.tbUserName = new System.Windows.Forms.TextBox();
@@ -264,8 +262,6 @@ namespace SaxCloudCryptStorage
 			// 
 			// tpCloud
 			// 
-			this.tpCloud.Controls.Add(this.tbPassword);
-			this.tpCloud.Controls.Add(this.lblPassword);
 			this.tpCloud.Controls.Add(this.btnSSH);
 			this.tpCloud.Controls.Add(this.lblUsername);
 			this.tpCloud.Controls.Add(this.tbUserName);
@@ -278,26 +274,9 @@ namespace SaxCloudCryptStorage
 			this.tpCloud.Text = "Cloud";
 			this.tpCloud.UseVisualStyleBackColor = true;
 			// 
-			// tbPassword
-			// 
-			this.tbPassword.Location = new System.Drawing.Point(157, 49);
-			this.tbPassword.Name = "tbPassword";
-			this.tbPassword.Size = new System.Drawing.Size(100, 20);
-			this.tbPassword.TabIndex = 6;
-			this.tbPassword.Visible = false;
-			// 
-			// lblPassword
-			// 
-			this.lblPassword.Location = new System.Drawing.Point(7, 47);
-			this.lblPassword.Name = "lblPassword";
-			this.lblPassword.Size = new System.Drawing.Size(100, 23);
-			this.lblPassword.TabIndex = 5;
-			this.lblPassword.Text = "Passwort:";
-			this.lblPassword.Visible = false;
-			// 
 			// btnSSH
 			// 
-			this.btnSSH.Location = new System.Drawing.Point(7, 144);
+			this.btnSSH.Location = new System.Drawing.Point(82, 48);
 			this.btnSSH.Name = "btnSSH";
 			this.btnSSH.Size = new System.Drawing.Size(100, 50);
 			this.btnSSH.TabIndex = 4;
@@ -323,7 +302,7 @@ namespace SaxCloudCryptStorage
 			// 
 			// btnSync
 			// 
-			this.btnSync.Location = new System.Drawing.Point(157, 144);
+			this.btnSync.Location = new System.Drawing.Point(82, 120);
 			this.btnSync.Name = "btnSync";
 			this.btnSync.Size = new System.Drawing.Size(100, 50);
 			this.btnSync.TabIndex = 0;
@@ -354,8 +333,6 @@ namespace SaxCloudCryptStorage
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		private System.Windows.Forms.Label lblPassword;
-		private System.Windows.Forms.MaskedTextBox tbPassword;
 		private System.Windows.Forms.Button btnSSH;
 		private System.Windows.Forms.Label lblUsername;
 		private System.Windows.Forms.Button btnSync;
